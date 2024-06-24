@@ -1,13 +1,13 @@
-package com.ufpr.bantadsbackend;
+package com.ufpr.conta;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BantadsBackendApplication {
+public class BantadsContaApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BantadsBackendApplication.class, args);
+        SpringApplication.run(BantadsContaApplication.class, args);
     }
 
 }

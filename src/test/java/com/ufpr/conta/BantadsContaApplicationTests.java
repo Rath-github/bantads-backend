@@ -1,10 +1,10 @@
-package com.ufpr.bantadsbackend;
+package com.ufpr.conta;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BantadsBackendApplicationTests {
+class BantadsContaApplicationTests {
 
     @Test
     void contextLoads() {
