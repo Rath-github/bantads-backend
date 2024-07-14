@@ -21,7 +21,7 @@ public class AccountSagaListener {
         switch (transfer.getAction()) {
             case "create-account":
                 try {
-                    AccountDTO createdAccount = accountServices.createAccount(transfer.getAccount());
+                    AccountDTO createdAccount = contaServices.createAccount(transfer.getAccount());
                     transfer.setAccount(createdAccount);
                     transfer.setAction("create-account-ok");
                 } catch (Exception e) {
@@ -31,20 +31,20 @@ public class AccountSagaListener {
                 break;
             case "delete-account":
                 try {
-                    accountServices.deleteAccount(transfer.getAccount().getId());
+                    contaServices.deleteAccount(transfer.getAccount().getId());
                     transfer.setAccount(null);
                     transfer.setAction("delete-account-ok");
                 } catch (Exception e) {
                     transfer.setAction("delete-account-error");
                 }
                 break;
-            // Adicione outros casos de ação conforme necessário
+           
             default:
                 System.out.println("Unsupported action: " + transfer.getAction());
                 break;
         }
 
-        // Exemplo de envio de resposta após processamento
+   
         accountSender.send(transfer.getAccount(), transfer.getAction());
 
         return transfer;
