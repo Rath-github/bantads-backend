@@ -3,10 +3,10 @@ package com.bantads.gerente.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.bantads.gerente.service.GerenteService;
 import com.bantads.gerente.model.Gerente;
 import com.bantads.conta.model.NovaContaRequest;
-import com.bantads.gerente.saga.GerenteSagaOrchestrator;
+import com.bantads.gerente.service.GerenteService;
+import com.bantads.gerente.producer.GerenteProducer;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class GerenteController {
     private GerenteService gerenteService;
 
     @Autowired
-    private GerenteSagaOrchestrator gerenteSagaOrchestrator;
+    private GerenteProducer gerenteProducer;
 
     @GetMapping
     public List<Gerente> listarTodos() {
@@ -26,12 +26,13 @@ public class GerenteController {
 
     @PostMapping
     public Gerente inserirGerente(@RequestBody Gerente gerente) {
-        return gerenteService.inserirGerente(gerente);
+        gerenteProducer.enviarParaInsercaoQueue(gerente);
+        return gerente;
     }
 
     @DeleteMapping("/{id}")
     public void removerGerente(@PathVariable Long id) {
-        gerenteSagaOrchestrator.removerGerente(id);
+        gerenteProducer.enviarParaRemocaoQueue(id);
     }
 
     @PutMapping("/{id}")
@@ -41,6 +42,6 @@ public class GerenteController {
 
     @PostMapping("/autocadastro")
     public void autocadastroGerente(@RequestBody NovaContaRequest novaContaRequest) {
-        gerenteSagaOrchestrator.autocadastroGerente(novaContaRequest);
+        gerenteProducer.enviarParaAutocadastroQueue(novaContaRequest);
     }
 }

@@ -10,7 +10,7 @@ import com.bantads.gerente.model.Gerente;
 import com.bantads.gerente.repository.GerenteRepository;
 
 @Service
-public class GerenteService {
+public class GerenteService{
     @Autowired
     private GerenteRepository gerenteRepository;
 
