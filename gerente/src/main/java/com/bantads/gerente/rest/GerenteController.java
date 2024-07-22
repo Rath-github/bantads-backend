@@ -1,25 +1,23 @@
 package com.bantads.gerente.rest;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.bantads.gerente.service.GerenteService;
 import com.bantads.gerente.model.Gerente;
+import com.bantads.conta.model.NovaContaRequest;
+import com.bantads.gerente.saga.GerenteSagaOrchestrator;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/gerentes")
 public class GerenteController {
     @Autowired
     private GerenteService gerenteService;
+
+    @Autowired
+    private GerenteSagaOrchestrator gerenteSagaOrchestrator;
 
     @GetMapping
     public List<Gerente> listarTodos() {
@@ -33,12 +31,16 @@ public class GerenteController {
 
     @DeleteMapping("/{id}")
     public void removerGerente(@PathVariable Long id) {
-        gerenteService.removerGerente(id);
+        gerenteSagaOrchestrator.removerGerente(id);
     }
 
     @PutMapping("/{id}")
     public Gerente alterarGerente(@PathVariable Long id, @RequestBody Gerente gerente) {
         return gerenteService.alterarGerente(id, gerente);
     }
-}
 
+    @PostMapping("/autocadastro")
+    public void autocadastroGerente(@RequestBody NovaContaRequest novaContaRequest) {
+        gerenteSagaOrchestrator.autocadastroGerente(novaContaRequest);
+    }
+}

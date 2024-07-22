@@ -37,5 +37,12 @@ public class GerenteService {
         }
         return null;
     }
-}
 
+    public Gerente consultarGerenteComMenosContas() {
+        return gerenteRepository.findTopByOrderByContasAsc().orElse(null);
+    }
+
+    public Gerente consultarGerenteComMaisContas() {
+        return gerenteRepository.findTopByOrderByContasDesc().orElse(null);
+    }
+}
