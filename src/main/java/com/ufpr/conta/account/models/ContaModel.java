@@ -1,25 +1,44 @@
-package com.ufpr.conta.account.dto;
+package com.ufpr.conta.account.models;
 
-import lombok.Data;
+import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
-import jakarta.validation.constraints.NotNull;
-
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-public class ContaDto {
-    @NotNull
+@Entity
+@Table(name = "CONTA")
+public class ContaModel implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(unique = true, updatable = false, nullable = false)
+    private UUID id;
+    @Column(nullable = false, unique = true)
     private UUID idCliente;
-    @NotNull
+    @Column(nullable = false)
     private UUID idGerente;
-    @NotNull
+    @Column(nullable = false)
     private Date dataCriacao;
-    @NotNull
+    @Column(columnDefinition = "numeric default 0")
     private double limite;
-    @NotNull
+    @Column(columnDefinition = "numeric default 0")
     private double saldo;
-    @NotNull
+    @Column(columnDefinition = "boolean default false")
     private boolean ativo;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public UUID getIdCliente() {
         return idCliente;

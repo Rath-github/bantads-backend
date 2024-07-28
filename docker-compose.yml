@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  postgres:
+    container_name: postgres_conta
+    image: postgres
+    environment:
+      POSTGRES_DB: bantads-conta
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5434:5432"
+    networks:
+      - conta-network
+    restart: always
+
+  conta:
+    build: .
+    image: bantads_conta
+    restart: on-failure
+    container_name: bantads_conta_container
+    command: docker run -p 8080:8080 bantads_conta
+    volumes:
+      - .:/app
+      - static_data:/app/static
+    networks:
+      - conta-network
+      - rabbitmq
+    ports:
+      - "8480:8080"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres:
+  static_data:
+
+networks:
+  conta-network:
+    external: false
+  rabbitmq:
+    external: true
