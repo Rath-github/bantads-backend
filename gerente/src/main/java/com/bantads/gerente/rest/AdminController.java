@@ -1,41 +1,38 @@
 package com.bantads.gerente.rest;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.bantads.gerente.model.Gerente;
 import com.bantads.gerente.saga.AdminSaga;
 
 @RestController
-@RequestMapping("/admins")
+@RequestMapping("/gerentes")
 public class AdminController {
 
     @Autowired
     private AdminSaga adminSaga;
 
     @PostMapping
-    public Gerente inserirAdmin(@RequestBody Gerente gerente) {
-        adminSaga.inserirAdmin(gerente);
+    public Gerente inserirGerente(@RequestBody Gerente gerente) {
+        adminSaga.inserirGerente(gerente);
         return gerente;
     }
 
     @DeleteMapping("/{id}")
-    public void removerAdmin(@PathVariable Long id) {
-        adminSaga.removerAdmin(id);
+    public void removerGerente(@PathVariable Long id) {
+        adminSaga.removerGerente(id);
     }
 
     @GetMapping("/{id}")
-    public Optional<Gerente> visualizarAdmin(@PathVariable Long id) {
-        return adminSaga.visualizarAdmin(id);
+    public Gerente visualizarGerente(@PathVariable Long id) {
+        return adminSaga.visualizarGerente(id);
     }
 
     @PutMapping("/{id}")
-    public Gerente editarAdmin(@PathVariable Long id, @RequestBody Gerente adminDetails) {
-        return adminSaga.editarAdmin(id, adminDetails);
+    public Gerente editarGerente(@PathVariable Long id, @RequestBody Gerente gerenteDetails) {
+        return adminSaga.editarGerente(id, gerenteDetails);
     }
 }

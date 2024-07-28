@@ -1,11 +1,13 @@
 package com.bantads.gerente.saga;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bantads.gerente.service.GerenteService;
 import com.bantads.gerente.model.Gerente;
+import com.bantads.gerente.service.GerenteService;
+import com.bantads.gerente.repository.GerenteRepository;
 
 @Service
 public class AdminSaga {
@@ -13,30 +15,41 @@ public class AdminSaga {
     @Autowired
     private GerenteService gerenteService;
 
-    public void inserirAdmin(Gerente gerente) {
-        gerenteRepository.save(gerente);
-        // Implementar depois: Enviar mensagem para o RabbitMQ.
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    private GerenteRepository gerenteRepository;
+
+    private static final String EXCHANGE_NAME = "gerenteExchange";
+
+    @Transactional
+    public void inserirGerente(Gerente gerente) {
+        Gerente savedGerente = gerenteService.inserirGerente(gerente);
+        rabbitTemplate.convertAndSend(EXCHANGE_NAME, "gerente.insert", savedGerente);
     }
 
-    public void removerAdmin(Long id) {
-        gerenteRepository.deleteById(id);
-        // Implementar depois: Enviar mensagem para o RabbitMQ.
+    @Transactional
+    public void removerGerente(Long id) {
+        gerenteService.removerGerente(id);
+        rabbitTemplate.convertAndSend(EXCHANGE_NAME, "gerente.delete", id);
     }
 
-    public Optional<Gerente> visualizarAdmin(Long id) {
-        return gerenteRepository.findById(id);
+    public Gerente visualizarGerente(Long id) {
+        return gerenteRepository.findById(id).orElse(null);
     }
 
-    public Gerente editarAdmin(Long id, Gerente adminDetails) {
-        Optional<Gerente> optionalAdmin = gerenteRepository.findById(id);
-
-        if (optionalAdmin.isPresent()) {
-            Gerente admin = optionalAdmin.get();
-            admin.setNome(adminDetails.getNome());
-            admin.setEmail(adminDetails.getEmail());
-            admin.setCpf(adminDetails.getCpf());
-            admin.setTelefone(adminDetails.getTelefone());
-            return gerenteRepository.save(admin);
+    @Transactional
+    public Gerente editarGerente(Long id, Gerente gerenteDetails) {
+        Gerente existingGerente = gerenteRepository.findById(id).orElse(null);
+        if (existingGerente != null) {
+            existingGerente.setNome(gerenteDetails.getNome());
+            existingGerente.setEmail(gerenteDetails.getEmail());
+            existingGerente.setCpf(gerenteDetails.getCpf());
+            existingGerente.setTelefone(gerenteDetails.getTelefone());
+            Gerente updatedGerente = gerenteRepository.save(existingGerente);
+            rabbitTemplate.convertAndSend(EXCHANGE_NAME, "gerente.update", updatedGerente);
+            return updatedGerente;
         }
         return null;
     }
