@@ -4,9 +4,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
+@Table(schema = "gerente")
 public class Gerente {
+	
 	public Gerente(Long id, String nome, String email, String cpf, String telefone) {
 		super();
 		this.id = id;
@@ -19,12 +31,20 @@ public class Gerente {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@NotBlank
 	private String nome;
+
+	@NotBlank
 	private String email;
+
+	@NotBlank
 	private String cpf;
+
+	@NotBlank
 	private String telefone;
 
-	// Getters e Setters
+	
 	public Long getId() {
 		return id;
 	}
