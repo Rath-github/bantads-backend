@@ -1,59 +1,69 @@
 package com.bantads.gerente.model;
 
-public class GerenteDTO {
-    private Long id;
-    private String nome;
-    private String email;
-    private String cpf;
-    private String telefone;
+import java.io.Serializable;
 
-    public GerenteDTO() {}
+public class GerenteDTO implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-    public GerenteDTO(Long id, String nome, String email, String cpf, String telefone) {
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
-        this.cpf = cpf;
-        this.telefone = telefone;
-    }
+	public GerenteDTO() {
+		super();
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public GerenteDTO(int id, String nome, String email, String cpf) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.email = email;
+		this.cpf = cpf;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	private int id;
+	private String nome;
+	private String email;
+	private String cpf;
+	private Integer numClientes;
 
-    public String getNome() {
-        return nome;
-    }
+	public Integer getNumClientes() {
+		return numClientes;
+	}
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+	public void setNumClientes(Integer numClientes) {
+		this.numClientes = numClientes;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public String getCpf() {
-        return cpf;
-    }
+	public String getNome() {
+		return nome;
+	}
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
-    public String getTelefone() {
-        return telefone;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
 }

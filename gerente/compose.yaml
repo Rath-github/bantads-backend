@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  postgres:
+    container_name: postgres_gerente
+    image: postgres
+    environment:
+      POSTGRES_DB: bantads_gerente
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - gerente-network
+    restart: always
+
+  gerente:
+    build: .
+    image: bantads_gerente
+    restart: on-failure
+    container_name: bantads_gerente_container
+    volumes:
+      - .:/app
+      - static_data:/app/static
+    networks:
+      - gerente-network
+      - rabbitmq
+    ports:
+      - "8380:8080"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+  static_data:
+
+networks:
+  gerente-network:
+    external: false
+  rabbitmq:
+    external: true

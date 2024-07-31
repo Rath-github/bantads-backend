@@ -1,55 +1,53 @@
 package com.bantads.gerente.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.io.Serializable;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 @Entity
-@Table(schema = "gerente")
-public class Gerente {
-	
-	public Gerente(Long id, String nome, String email, String cpf, String telefone) {
+@Table(name = "gerente")
+public class Gerente implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@Id
+	@GeneratedValue
+	@Column(name = "id")
+	private int id;
+	@Column(name = "nome")
+	private String nome;
+	@Column(name = "email")
+	private String email;
+	@Column(name = "cpf")
+	private String cpf;
+	@Column(name = "numclientes")
+	private int numClientes = 0;
+	@Column(name = "password")
+	private String password;
+
+	public Gerente() {
+		super();
+	}
+
+	public Gerente(int id, String nome, String email, String password, String cpf) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
+		this.password = password;
 		this.cpf = cpf;
-		this.telefone = telefone;
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	@NotBlank
-	private String nome;
-
-	@NotBlank
-	private String email;
-
-	@NotBlank
-	private String cpf;
-
-	@NotBlank
-	private String telefone;
-
-	
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -77,11 +75,23 @@ public class Gerente {
 		this.cpf = cpf;
 	}
 
-	public String getTelefone() {
-		return telefone;
+	public static Long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
+	public int getNumClientes() {
+		return numClientes;
+	}
+
+	public void setNumClientes(int numClientes) {
+		this.numClientes = numClientes;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }
