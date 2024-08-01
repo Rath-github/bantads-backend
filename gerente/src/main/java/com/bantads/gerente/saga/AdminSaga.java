@@ -4,7 +4,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.web.client.RestTemplate;
 import com.bantads.gerente.model.Gerente;
 import com.bantads.gerente.service.GerenteService;
 import com.bantads.gerente.repository.GerenteRepository;
@@ -21,7 +21,11 @@ public class AdminSaga {
     @Autowired
     private GerenteRepository gerenteRepository;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     private static final String EXCHANGE_NAME = "gerenteExchange";
+    private static final String CLIENTES_SERVICE_URL = "http://localhost:8081/clientes";
 
     @Transactional
     public void inserirGerente(Gerente gerente) {
@@ -52,5 +56,10 @@ public class AdminSaga {
             return updatedGerente;
         }
         return null;
+    }
+
+    public Cliente visualizarCliente (Long id) {
+        String url = CLIENTES_SERVICE_URL + "/" + id;
+        return restTemplate.getForObject(url, Cliente.class);
     }
 }
